@@ -73,7 +73,8 @@ impl Decode<'_> for Handshake {
         let auth_plugin = if capabilities.contains(Capabilities::PLUGIN_AUTH) {
             Some(buf.get_str_nul()?.parse()?)
         } else {
-            None
+            // if no authentication plug-in is specified, default to MySQL native Password
+            Some(AuthPlugin::MySqlNativePassword)
         };
 
         Ok(Self {
